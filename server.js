@@ -1,13 +1,13 @@
-const cors = require("cors");
-app.use(cors());
-
 const express = require("express");
+const cors = require("cors");
 const mercadopago = require("mercadopago");
 const axios = require("axios");
 
 const app = express();
-app.use(express.json());
+
 app.use(cors());
+app.use(express.json());
+
 
 /* ================================
    CONFIGURACIÓN
@@ -116,7 +116,44 @@ async function createPrintfulOrder(items, customer) {
 
   return response.data;
 }
+/* ================================
+   CATALOGO PRINTFUL
+================================ */
 
+app.get("/api/catalog", async (req, res) => {
+  try {
+    const productsRes = await axios.get(
+      "https://api.printful.com/store/products",
+      {
+        headers: {
+          Authorization: `Bearer ${PRINTFUL_API_KEY}`
+        }
+      }
+    );
+
+    const products = productsRes.data.result;
+    const detailedProducts = [];
+
+    for (let product of products) {
+      const detailRes = await axios.get(
+        `https://api.printful.com/store/products/${product.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${PRINTFUL_API_KEY}`
+          }
+        }
+      );
+
+      detailedProducts.push(detailRes.data.result);
+    }
+
+    res.json(detailedProducts);
+
+  } catch (error) {
+    console.error("Error catalog:", error.response?.data || error.message);
+    res.status(500).json({ error: "Error obteniendo catálogo" });
+  }
+});
 /* ================================
    HEALTH CHECK
 ================================ */
@@ -135,3 +172,4 @@ app.listen(PORT, () => {
   console.log("Servidor corriendo en puerto " + PORT);
 
 });
+
