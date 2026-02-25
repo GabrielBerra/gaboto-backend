@@ -1,5 +1,5 @@
 {
-  "name": "gaboto-backend",
+  "name": "gaboto-backend-1",
   "version": "1.0.0",
   "main": "server.js",
   "type": "commonjs",
@@ -12,3 +12,4 @@
     "mercadopago": "^1.5.15"
   }
 }
+
