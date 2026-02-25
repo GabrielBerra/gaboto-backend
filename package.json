@@ -1,0 +1,17 @@
+{
+  "name": "gaboto-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7",
+    "mercadopago": "^1.5.15"
+  }
+
+  
+}
+
